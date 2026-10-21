@@ -1,0 +1,10 @@
+# Safety net. The api and sia_pt folders have their own .gitignore too.
+.env
+.env.*
+!.env.example
+node_modules/
+vendor/
+dist/
+*.log
+.DS_Store
+Thumbs.db
