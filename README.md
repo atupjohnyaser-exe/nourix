@@ -142,13 +142,30 @@ The server only accepts keys that start with `sk_test_`, so a live key can't be 
 - People's choice fills with classic dishes until enough users have saved recipes.
 - Favorites are kept in the browser, and a copy goes to the server for counting.
 
-## Live deployment
-- **Website (React):** Vercel. Root directory `sia_pt`, environment variable `VITE_API_URL=https://<api-name>.onrender.com/api`.
-- **API (Laravel):** Render web service built from `api/Dockerfile`, with a Render PostgreSQL database. Locally we use MySQL, and the same migrations run on PostgreSQL.
-- **Live link:** add your Vercel address here.
-- **Repository:** add your GitHub address here.
+## Environment variables
+All secrets live in `.env` files that are ignored by Git. The repository only has `api/.env.example` and `sia_pt/.env.example`, with no real values.
 
-Render sets every secret as an environment variable (see `.env.example`). On Render's free plan the API goes to sleep after 15 minutes without traffic, so the first request after a pause takes about a minute.
+| Variable | Where | What it is for |
+|---|---|---|
+| `APP_KEY` | Laravel | Encryption key. Make one with `php artisan key:generate` |
+| `DB_*` or `DB_URL` | Laravel | Database connection (MySQL locally, PostgreSQL on Render) |
+| `FRONTEND_URL` | Laravel | Website address, used for CORS and for the PayMongo and reset-password links |
+| `PAYMONGO_SECRET_KEY` | Laravel | PayMongo test secret key (`sk_test_...`) |
+| `PAYMONGO_WEBHOOK_SECRET` | Laravel | Optional, only for the webhook |
+| `APP_TIMEZONE` | Laravel | Makes "today" in the spending tracker match local time |
+| `VITE_API_URL` | React | API address when it is not on the same site (empty in development) |
+
+TheMealDB and Open Food Facts need no API keys.
+
+## Live deployment
+- **Repository:** https://github.com/atupjohnyaser-exe/nourix
+- **API (live):** https://nourix-api-zvj4.onrender.com (try `/api/meals/search?q=chicken`)
+- **Website (live):** (add your Vercel address here)
+
+The website runs on Vercel (root directory `sia_pt`, with `VITE_API_URL` set). The API runs on Render from `api/Dockerfile`, with a Render PostgreSQL database. On Render's free plan the API goes to sleep after 15 minutes without traffic, so the first request after a pause takes about a minute.
+
+## Demo
+The project is presented live: registration, the recipe and grading feature, and a full PayMongo test checkout (a cancelled payment first, then a successful one).
 
 ## Troubleshooting
 
